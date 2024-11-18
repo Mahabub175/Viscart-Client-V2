@@ -63,7 +63,9 @@ const GlobalCart = () => {
         ></div>
       )}
 
-      <div className="fixed bottom-[20%] right-5 z-50">
+      <div
+        className={`fixed bottom-[20%] right-5 z-50 ${user ? "" : "hidden"}`}
+      >
         <div
           onClick={toggleCart}
           className="bg-primary text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl cursor-pointer animate-pulse"
