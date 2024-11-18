@@ -124,8 +124,8 @@ const AllProducts = () => {
             <Slider
               range
               min={0}
-              max={1000}
-              defaultValue={[0, 1000]}
+              max={10000}
+              defaultValue={[0, 10000]}
               onChange={handlePriceChange}
             />
             <div className="flex justify-between mt-2 text-sm">
