@@ -15,7 +15,7 @@ const AllProducts = () => {
   const [pageSize, setPageSize] = useState(18);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
   const [sorting, setSorting] = useState("");
 
   const { data: brandData } = useGetAllBrandsQuery();
