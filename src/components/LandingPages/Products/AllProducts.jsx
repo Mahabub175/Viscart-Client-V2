@@ -5,8 +5,8 @@ import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi"
 import { useGetProductsQuery } from "@/redux/services/product/productApi";
 import { Pagination, Select, Slider } from "antd";
 import { useState } from "react";
-import FilteredProducts from "./FIlteredProducts";
 import { paginationNumbers } from "@/assets/data/paginationData";
+import FilteredProducts from "./FilteredProducts";
 
 const { Option } = Select;
 
