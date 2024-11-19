@@ -7,7 +7,7 @@ import { compressImage } from "@/utilities/lib/compressImage";
 import { toast } from "sonner";
 import ProductForm from "./ProductForm";
 import { useCallback, useRef, useState } from "react";
-import { Checkbox, Form } from "antd";
+import { Form } from "antd";
 import CustomTextEditor from "@/components/Reusable/Form/CustomTextEditor";
 
 const ProductCreate = ({ open, setOpen }) => {
@@ -64,11 +64,6 @@ const ProductCreate = ({ open, setOpen }) => {
         <ProductForm handleVariantProduct={handleVariantProduct} />
         <Form.Item label={"Product Description"} name={"description"} required>
           <CustomTextEditor value={content} onChange={setContent} />
-        </Form.Item>
-        <Form.Item name={"isFeatured"} valuePropName="checked">
-          <Checkbox className="font-semibold">
-            This Product Is Featured
-          </Checkbox>
         </Form.Item>
         <FormButton setOpen={setOpen} loading={isLoading} />
       </CustomForm>

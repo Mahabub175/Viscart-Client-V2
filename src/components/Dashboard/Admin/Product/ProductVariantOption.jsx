@@ -67,9 +67,7 @@ const ProductVariantOption = ({
       key: "sku",
       editable: true,
       width: 130,
-      render: (sku) => (
-        <span className="text-dark   text-xs md:text-sm">{sku}</span>
-      ),
+      render: (sku) => <span className="text-xs md:text-sm">{sku}</span>,
     },
     {
       title: "Stock",
@@ -78,9 +76,7 @@ const ProductVariantOption = ({
       align: "center",
       editable: true,
       width: 100,
-      render: (stock) => (
-        <span className="text-dark   text-xs md:text-sm">{stock}</span>
-      ),
+      render: (stock) => <span className="text-xs md:text-sm">{stock}</span>,
     },
     {
       title: "Buying Price",
@@ -90,7 +86,7 @@ const ProductVariantOption = ({
       editable: true,
       width: 150,
       render: (buyingPrice) => (
-        <span className="text-dark   text-xs md:text-sm">{buyingPrice}</span>
+        <span className="text-xs md:text-sm">{buyingPrice}</span>
       ),
     },
     {
@@ -101,8 +97,16 @@ const ProductVariantOption = ({
       width: 150,
       editable: true,
       render: (sellingPrice) => (
-        <span className="text-dark   text-xs md:text-sm">{sellingPrice}</span>
+        <span className="text-xs md:text-sm">{sellingPrice}</span>
       ),
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      align: "right",
+      width: 150,
+      editable: true,
     },
 
     {
@@ -168,6 +172,7 @@ const ProductVariantOption = ({
             stock: item.stock,
             sellingPrice: item.sellingPrice,
             buyingPrice: item.buyingPrice,
+            image: item.image,
             attributeCombination: item.variant_attribute_ids,
           };
         }) ?? [];

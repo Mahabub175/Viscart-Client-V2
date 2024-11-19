@@ -125,6 +125,10 @@ const ProductForm = ({ attachment, handleVariantProduct, data }) => {
       {isVariant && (
         <VariantComponent onCustomSubmit={handleVariantProduct} data={data} />
       )}
+
+      <Form.Item name={"isFeatured"} valuePropName="checked">
+        <Checkbox className="font-semibold">This Product Is Featured</Checkbox>
+      </Form.Item>
     </>
   );
 };

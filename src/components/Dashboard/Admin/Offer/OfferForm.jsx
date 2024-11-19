@@ -1,3 +1,4 @@
+import CustomDatePicker from "@/components/Reusable/Form/CustomDatePicker";
 import CustomInput from "@/components/Reusable/Form/CustomInput";
 import CustomSelect from "@/components/Reusable/Form/CustomSelect";
 import FileUploader from "@/components/Reusable/Form/FileUploader";
@@ -29,14 +30,14 @@ const OfferForm = ({ attachment }) => {
         mode={"multiple"}
         required={true}
       />
-      {/* <div className="two-grid">
+      <div className="two-grid">
         <CustomDatePicker
           name={"startDate"}
           label={"Start Date"}
           required={true}
         />
         <CustomDatePicker name={"endDate"} label={"End Date"} required={true} />
-      </div> */}
+      </div>
       <CustomSelect
         name={"type"}
         label={"Offer Type"}

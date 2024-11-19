@@ -24,7 +24,6 @@ import {
 } from "antd";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { TbListDetails } from "react-icons/tb";
 
@@ -128,13 +127,13 @@ const AdminOffer = () => {
             onClick={({ key }) => handleMenuClick(key, item.key)}
             className="w-full flex flex-col gap-2"
           >
-            <Menu.Item key="edit">
+            {/* <Menu.Item key="edit">
               <Tooltip placement="top" title={"Edit"}>
                 <button className="bg-green-500 p-2 rounded-xl text-white hover:scale-110 duration-300">
                   <FaEdit />
                 </button>
               </Tooltip>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="delete">
               <Tooltip placement="top" title={"Delete"}>
                 <button className="bg-red-500 p-2 rounded-xl text-white hover:scale-110 duration-300">
