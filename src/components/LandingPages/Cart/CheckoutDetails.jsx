@@ -4,6 +4,7 @@ import { useGetSingleCouponByCodeQuery } from "@/redux/services/coupon/couponAPi
 import { useGetSingleGiftCardByCodeQuery } from "@/redux/services/giftCard/giftCardApi";
 import { toast } from "sonner";
 import moment from "moment";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 
 const CheckoutDetails = ({
   subTotal,
@@ -19,6 +20,8 @@ const CheckoutDetails = ({
   setGrandTotal,
 }) => {
   const [discountOption, setDiscountOption] = useState("coupon");
+
+  const { data: globalData } = useGetAllGlobalSettingQuery();
 
   const {
     data: couponData,
@@ -134,24 +137,24 @@ const CheckoutDetails = ({
       <div className="bg-primaryLight p-5 rounded-lg border-2 border-primary space-y-3 font-semibold">
         <div className="flex justify-between items-center gap-20">
           <p>Sub Total</p>
-          <p>$ {subTotal || 0}</p>
+          <p>{globalData?.results?.currency + " " + subTotal || 0}</p>
         </div>
 
         <div className="flex justify-between items-center gap-20">
           <p>Shipping Fee</p>
-          <p>$ {shippingFee || 0}</p>
+          <p>{globalData?.results?.currency + " " + shippingFee || 0}</p>
         </div>
 
         <div className="flex justify-between items-center gap-20">
           <p>Discount</p>
-          <p>$ {discountAmount || 0}</p>
+          <p>{globalData?.results?.currency + " " + discountAmount || 0}</p>
         </div>
 
         <hr className="border border-primary" />
 
         <div className="flex justify-between items-center gap-20">
           <p>Grand Total</p>
-          <p>$ {grandTotal || 0}</p>
+          <p>{globalData?.results?.currency + " " + grandTotal || 0}</p>
         </div>
       </div>
     </div>

@@ -3,8 +3,11 @@ import Image from "next/image";
 import React from "react";
 import QuickViewHover from "./QuickViewHover";
 import Link from "next/link";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 
 const FilteredProducts = ({ data }) => {
+  const { data: globalData } = useGetAllGlobalSettingQuery();
+
   return (
     <section>
       {data?.length === 0 ? (
@@ -39,16 +42,16 @@ const FilteredProducts = ({ data }) => {
                 <div className="flex items-center gap-4 justify-center">
                   {item?.offerPrice ? (
                     <p className="text-primary text-2xl font-bold">
-                      ${item?.offerPrice}
+                      {globalData?.results?.currency + " " + item?.offerPrice}
                     </p>
                   ) : (
                     <p className="text-primary text-2xl font-bold">
-                      ${item?.sellingPrice}
+                      {globalData?.results?.currency + " " + item?.sellingPrice}
                     </p>
                   )}
                   {item?.offerPrice && (
                     <p className="text-base font-bold line-through text-red-500">
-                      ${item?.sellingPrice}
+                      {globalData?.results?.currency + " " + item?.sellingPrice}
                     </p>
                   )}
                 </div>

@@ -7,6 +7,7 @@ import { Pagination, Select, Slider } from "antd";
 import { useState } from "react";
 import { paginationNumbers } from "@/assets/data/paginationData";
 import FilteredProducts from "./FilteredProducts";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 
 const { Option } = Select;
 
@@ -18,6 +19,7 @@ const AllProducts = () => {
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [sorting, setSorting] = useState("");
 
+  const { data: globalData } = useGetAllGlobalSettingQuery();
   const { data: brandData } = useGetAllBrandsQuery();
   const { data: categoryData } = useGetAllCategoriesQuery();
   const { data: productData } = useGetProductsQuery({
@@ -129,8 +131,8 @@ const AllProducts = () => {
               onChange={handlePriceChange}
             />
             <div className="flex justify-between mt-2 text-sm">
-              <span>${priceRange[0]}</span>
-              <span>${priceRange[1]}</span>
+              <span>{globalData?.results?.currency + " " + priceRange[0]}</span>
+              <span>{globalData?.results?.currency + " " + priceRange[1]}</span>
             </div>
           </div>
         </div>

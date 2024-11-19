@@ -48,7 +48,7 @@ const Brands = () => {
             return (
               <SwiperSlide key={item?._id}>
                 <Link href={`/products/filtered?filter=${item?.name}`}>
-                  <div className="group cursor-pointer overflow-hidden w-[260px] h-[260px] rounded-xl mx-auto">
+                  <div className="group cursor-pointer overflow-hidden w-[260px] h-[260px] rounded-xl mx-auto flex justify-center items-center">
                     <Image
                       src={
                         item?.attachment ??

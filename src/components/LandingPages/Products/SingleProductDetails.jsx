@@ -11,8 +11,10 @@ import {
 import { Rate } from "antd";
 import Image from "next/image";
 import ProductCard from "../Home/Products/ProductCard";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 
 const SingleProductDetails = ({ params }) => {
+  const { data: globalData } = useGetAllGlobalSettingQuery();
   const { data: singleProduct } = useGetSingleProductBySlugQuery(
     params?.productId
   );
@@ -81,14 +83,18 @@ const SingleProductDetails = ({ params }) => {
             Price:{" "}
             {singleProduct?.offerPrice ? (
               <p className="text-primary text-xl">
-                ${singleProduct?.offerPrice}
+                {globalData?.results?.currency +
+                  " " +
+                  singleProduct?.offerPrice}
               </p>
             ) : (
-              <p className="text-primary text-xl">${currentPrice}</p>
+              <p className="text-primary text-xl">
+                {globalData?.results?.currency + " " + currentPrice}
+              </p>
             )}
             {singleProduct?.offerPrice && (
               <p className="text-base line-through text-red-500">
-                ${currentPrice}
+                {globalData?.results?.currency + " " + currentPrice}
               </p>
             )}
           </div>
