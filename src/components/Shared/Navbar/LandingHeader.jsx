@@ -10,10 +10,12 @@ import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import CategoryNavigation from "./CategoryNavigation";
 import BottomNavigation from "./BottomNavigation";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 
 const LandingHeader = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { data: globalData } = useGetAllGlobalSettingQuery();
 
   const showDrawer = () => {
     setDrawerVisible(true);
@@ -38,21 +40,33 @@ const LandingHeader = () => {
   const top = (
     <div className="bg-grey">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between px-5 py-2">
-        <Link href={"/"}>Hotline: +880 1810 169 101</Link>
+        <Link href={"/"}>Hotline: {globalData?.results?.businessWhatsapp}</Link>
         <div className="flex items-center gap-4">
-          <Link href={"/"}>Contact Us</Link>
+          <Link href={"/contact"}>Contact Us</Link>
           <div>|</div>
           <div className="flex items-center gap-4">
-            <Link href={"/"} target="_blank">
+            <Link
+              href={globalData?.results?.businessFacebook ?? "/"}
+              target="_blank"
+            >
               <FaFacebook className="text-2xl rounded-full text-primary hover:scale-110 duration-300" />
             </Link>
-            <Link href={"/"} target="_blank">
+            <Link
+              href={globalData?.results?.businessLinkedin ?? "/"}
+              target="_blank"
+            >
               <FaLinkedin className="text-2xl rounded-full text-primary hover:scale-110 duration-300" />
             </Link>
-            <Link href={"/"} target="_blank">
+            <Link
+              href={globalData?.results?.businessInstagram ?? "/"}
+              target="_blank"
+            >
               <FaInstagram className="text-2xl rounded-full text-primary hover:scale-110 duration-300" />
             </Link>
-            <Link href={"/"} target="_blank">
+            <Link
+              href={globalData?.results?.businessTwitter ?? "/"}
+              target="_blank"
+            >
               <FaSquareXTwitter className="text-2xl rounded-full text-primary hover:scale-110 duration-300" />
             </Link>
           </div>
