@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NewsletterBanner from "@/components/LandingPages/Home/NewsletterBanner";
 import ProductCountCart from "@/components/LandingPages/Home/Products/ProductCountCart";
 import SmallFeature from "@/components/LandingPages/Home/SmallFeature";
@@ -12,13 +12,15 @@ import { Rate } from "antd";
 import Image from "next/image";
 import ProductCard from "../Home/Products/ProductCard";
 import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
+import { usePathname } from "next/navigation";
+import { formatImagePath } from "@/utilities/lib/formatImagePath";
 
 const SingleProductDetails = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
   const { data: singleProduct } = useGetSingleProductBySlugQuery(
     params?.productId
   );
-
+  const pathname = usePathname();
   const { data: productData } = useGetAllProductsQuery();
 
   const activeProducts = productData?.results
@@ -28,19 +30,19 @@ const SingleProductDetails = ({ params }) => {
         item?.name !== singleProduct?.name &&
         item?.category?.name === singleProduct?.category?.name
     )
-    ?.slice(0, 4);
+    ?.slice(0, 8);
 
   const [selectedVariant, setSelectedVariant] = useState(null);
-
-  useEffect(() => {
-    if (singleProduct?.variants) {
-      setSelectedVariant(singleProduct?.variants[0]);
-    }
-  }, [singleProduct]);
 
   const handleVariantSelect = (variant) => {
     setSelectedVariant(variant);
   };
+
+  const currentImage = selectedVariant?.image
+    ? formatImagePath(selectedVariant?.image)
+    : pathname.includes("/products")
+    ? singleProduct?.mainImage
+    : formatImagePath(singleProduct?.mainImage);
 
   const currentPrice = selectedVariant
     ? selectedVariant.sellingPrice
@@ -50,19 +52,22 @@ const SingleProductDetails = ({ params }) => {
     <section className="my-container py-10">
       <div className="border-2 border-primary rounded-xl p-5 flex flex-col lg:flex-row items-center justify-center gap-10 mb-10 shadow-xl">
         <div className="bg-primaryLight p-10 rounded-xl">
-          <Image
-            src={
-              selectedVariant?.images?.[0] ??
-              singleProduct?.mainImage ??
-              "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
-            }
-            alt="product image"
-            height={400}
-            width={400}
-          />
+          {currentImage ? (
+            <Image
+              src={
+                currentImage ??
+                "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
+              }
+              alt="product image"
+              height={400}
+              width={400}
+            />
+          ) : (
+            <p>No image available</p>
+          )}
         </div>
         <div className="lg:w-1/2 flex flex-col gap-3">
-          <h2 className="text-3xl lg:text-5xl font-bold">
+          <h2 className="text-3xl lg:text-4xl font-bold">
             {singleProduct?.name}
           </h2>
           <div className="flex items-center gap-2">
@@ -102,7 +107,7 @@ const SingleProductDetails = ({ params }) => {
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <span className="font-bold">Select Variant:</span>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {singleProduct?.variants.map((variant) => (
                     <div
                       key={variant._id}
@@ -112,25 +117,34 @@ const SingleProductDetails = ({ params }) => {
                           ? "border-primary"
                           : "border-gray-300"
                       }`}
-                      title={variant?.attributeCombination[0]?.label}
+                      title={variant?.attributeCombination
+                        ?.map((attribute) => attribute?.name)
+                        .join(" : ")}
                       style={{
                         backgroundColor:
-                          variant?.attributeCombination[0]?.label,
+                          variant?.attributeCombination?.[0]?.label,
                       }}
                     >
-                      {" "}
-                      {variant?.attributeCombination[0]?.type === "other" && (
-                        <span className="text-black flex items-center justify-center mt-1 font-bold">
-                          {variant?.attributeCombination[0]?.label}
-                        </span>
-                      )}
+                      {variant?.attributeCombination?.map((attribute, idx) => (
+                        <div key={idx}>
+                          {attribute?.type === "other" && (
+                            <span className="text-black flex items-center justify-center mt-1 font-bold">
+                              {attribute?.label}
+                            </span>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
               </div>
             </div>
           )}
-          <ProductCountCart item={selectedVariant || singleProduct} fullWidth />
+          <ProductCountCart
+            item={selectedVariant || singleProduct}
+            fullWidth
+            previousSelectedVariant={selectedVariant}
+          />
         </div>
       </div>
       <div className="border-2 border-primary rounded-xl p-5 mb-10 shadow-xl">

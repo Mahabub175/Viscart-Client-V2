@@ -13,7 +13,7 @@ const LandingFooter = () => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
   return (
     <>
-      <footer className="my-container border-t py-10 mt-10">
+      <footer className="my-container border-t py-10 mt-10 mb-20 lg:mb-0">
         <div className="grid lg:grid-cols-5 items-start justify-center">
           <ContactInfo globalData={globalData} />
           <div className="lg:flex justify-between items-start gap-20 col-span-3">
