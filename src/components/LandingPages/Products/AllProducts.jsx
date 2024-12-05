@@ -140,7 +140,7 @@ const AllProducts = () => {
           <div className="bg-gray-200 flex items-center justify-between py-3 px-6 mb-6 rounded-xl">
             <p>
               There are{" "}
-              <span className="font-semibold">{activeProducts?.length}</span>{" "}
+              <span className="font-semibold">{filteredProducts?.length}</span>{" "}
               products.
             </p>
             <div className="flex items-center gap-2 w-1/4">

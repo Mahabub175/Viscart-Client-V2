@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import deleteImage from "@/assets/images/Trash-can.png";
 import DeleteModal from "@/components/Reusable/Modal/DeleteModal";
 import { useRouter } from "next/navigation";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 
 const GlobalCart = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ const GlobalCart = () => {
   const user = useSelector(useCurrentUser);
   const { data: cartData } = useGetSingleCartByUserQuery(user?._id);
   const [deleteCart] = useDeleteCartMutation();
+  const { data: globalData } = useGetAllGlobalSettingQuery();
 
   useEffect(() => {
     if (cartData) {
@@ -74,7 +76,7 @@ const GlobalCart = () => {
         </div>
 
         {isCartOpen && (
-          <div className="absolute bottom-20 lg:bottom-0 right-0 lg:right-20 w-[350px] p-4 bg-white shadow-lg rounded-lg text-black z-50">
+          <div className="absolute bottom-20 lg:bottom-0 right-0 lg:right-20 w-[350px] lg:w-[400px] p-4 bg-white shadow-lg rounded-lg text-black z-50">
             <div className="flex justify-between mb-5">
               <h3 className="font-bold text-lg">Cart Details</h3>
               <button
@@ -85,7 +87,7 @@ const GlobalCart = () => {
               </button>
             </div>
             <div>
-              {cartData?.length === 0 ? (
+              {cartData?.length === 0 || !cartData ? (
                 <div className="flex items-center justify-center">
                   <h2 className="text-base text-center my-20 font-bold text-black/80">
                     Please add a product to cart to see them here
@@ -97,7 +99,7 @@ const GlobalCart = () => {
                     {cartData?.length} Items
                   </h2>
                   <div className="flex flex-col lg:flex-row items-start gap-4 justify-between my-10">
-                    <div className="border-2 border-primary rounded p-5 max-h-[300px] overflow-y-auto">
+                    <div className="border-2 border-primary rounded lg:w-[380px] mx-auto p-5 max-h-[300px] overflow-y-auto">
                       {cartData?.map((item) => (
                         <div
                           key={item?._id}
@@ -106,10 +108,10 @@ const GlobalCart = () => {
                           <div className="flex flex-[3] items-center gap-4">
                             <div>
                               <Link
-                                href={`/products/${item?.product?.slug}`}
+                                href={`/products/${item?.slug}`}
                                 className="text-base font-normal hover:underline"
                               >
-                                {item?.product?.name}
+                                {item?.productName}
                               </Link>
                               <div className="mt-2 font-semibold">
                                 Quantity: {counts[item._id]}
@@ -119,9 +121,9 @@ const GlobalCart = () => {
 
                           <div className="flex flex-1 items-center gap-4">
                             <p className="text-primary text-base font-bold">
-                              $
-                              {(item?.product?.offerPrice ||
-                                item?.product?.sellingPrice) * counts[item._id]}
+                              {globalData?.results?.currency +
+                                " " +
+                                item?.price * counts[item._id]}
                             </p>
                           </div>
                           <div

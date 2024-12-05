@@ -1,4 +1,4 @@
-import { Rate } from "antd";
+import { Rate, Tooltip } from "antd";
 import Image from "next/image";
 import React from "react";
 import QuickViewHover from "./QuickViewHover";
@@ -19,7 +19,7 @@ const FilteredProducts = ({ data }) => {
           {data?.map((item) => (
             <div
               key={item?._id}
-              className="bg-gray-100 border rounded-xl shadow-xl relative group w-[300px] mx-auto"
+              className="bg-gray-100 border rounded-xl shadow-xl relative group w-[300px] h-[550px] mx-auto"
             >
               <div className="relative overflow-hidden rounded-t-xl">
                 <Image
@@ -36,9 +36,13 @@ const FilteredProducts = ({ data }) => {
                   <Rate disabled value={item?.ratings?.average} allowHalf />(
                   {item?.ratings?.count})
                 </div>
-                <h2 className="text-xl text-center font-semibold my-4">
-                  {item?.name}
-                </h2>
+                <Tooltip placement="top" title={item?.name}>
+                  <h2 className="text-center font-semibold mt-6 mb-4">
+                    {item?.name.length > 50
+                      ? item.name.slice(0, 50).concat("...")
+                      : item.name}
+                  </h2>
+                </Tooltip>
                 <div className="flex items-center gap-4 justify-center">
                   {item?.offerPrice ? (
                     <p className="text-primary text-2xl font-bold">
@@ -58,9 +62,9 @@ const FilteredProducts = ({ data }) => {
               </div>
               <Link
                 href={`/products/${item?.slug}`}
-                className="flex items-center justify-center mt-4"
+                className="flex items-center justify-center absolute bottom-0 w-full"
               >
-                <div className="w-full bg-primary text-white font-bold py-2 text-center rounded-b-xl">
+                <div className="bg-primary px-[6.5rem] text-white font-bold py-2 text-center rounded-b-xl">
                   View Details
                 </div>
               </Link>
