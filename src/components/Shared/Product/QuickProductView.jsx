@@ -1,19 +1,15 @@
 "use client";
 
 import ProductCountCart from "@/components/LandingPages/Home/Products/ProductCountCart";
+import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import { Modal, Rate } from "antd";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const QuickProductView = ({ item, isModalVisible, handleModalClose }) => {
   const [selectedVariant, setSelectedVariant] = useState(null);
-
-  useEffect(() => {
-    if (item?.variants) {
-      setSelectedVariant(item?.variants[0]);
-    }
-  }, [item]);
-
+  const pathname = usePathname();
   const handleVariantSelect = (variant) => {
     setSelectedVariant(variant);
   };
@@ -22,6 +18,12 @@ const QuickProductView = ({ item, isModalVisible, handleModalClose }) => {
     ? selectedVariant?.sellingPrice
     : item?.sellingPrice;
 
+  const currentImage = selectedVariant?.image
+    ? formatImagePath(selectedVariant?.image)
+    : ["/products", "/wishlist", "/compare"].includes(pathname)
+    ? item?.mainImage
+    : formatImagePath(item?.mainImage);
+
   return (
     <Modal
       open={isModalVisible}
@@ -29,12 +31,12 @@ const QuickProductView = ({ item, isModalVisible, handleModalClose }) => {
       footer={null}
       centered
       loading={!item}
-      width={800}
+      width={850}
     >
       <div className="flex flex-col items-center justify-center lg:flex-row gap-10 pt-5">
         <div className="w-full">
           <Image
-            src={item?.mainImage}
+            src={currentImage}
             alt={item?.name}
             width={300}
             height={300}
@@ -60,7 +62,7 @@ const QuickProductView = ({ item, isModalVisible, handleModalClose }) => {
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <span className="font-bold">Select Variant:</span>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {item?.variants.map((variant) => (
                     <div
                       key={variant._id}
@@ -70,17 +72,23 @@ const QuickProductView = ({ item, isModalVisible, handleModalClose }) => {
                           ? "border-primary"
                           : "border-gray-300"
                       }`}
-                      title={variant?.attributeCombination[0]?.label}
+                      title={variant?.attributeCombination
+                        ?.map((attribute) => attribute?.label)
+                        .join(" : ")}
                       style={{
                         backgroundColor:
-                          variant?.attributeCombination[0]?.label,
+                          variant?.attributeCombination?.[0]?.label,
                       }}
                     >
-                      {variant?.attributeCombination[0]?.type === "other" && (
-                        <span className="text-black flex items-center justify-center mt-1 font-bold">
-                          {variant?.attributeCombination[0]?.label}
-                        </span>
-                      )}
+                      {variant?.attributeCombination?.map((attribute, idx) => (
+                        <div key={idx}>
+                          {attribute?.type === "other" && (
+                            <span className="text-black flex items-center justify-center mt-1 font-bold">
+                              {attribute?.label}
+                            </span>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
@@ -104,6 +112,7 @@ const QuickProductView = ({ item, isModalVisible, handleModalClose }) => {
           <ProductCountCart
             item={item}
             handleModalClose={handleModalClose}
+            previousSelectedVariant={selectedVariant}
             fullWidth
           />
         </div>

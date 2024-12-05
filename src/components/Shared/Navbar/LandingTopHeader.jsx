@@ -1,8 +1,10 @@
 import { useGetSingleUserQuery } from "@/redux/services/auth/authApi";
 import { logout, useCurrentUser } from "@/redux/services/auth/authSlice";
 import { useGetSingleCartByUserQuery } from "@/redux/services/cart/cartApi";
+import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
 import { useGetSingleWishlistByUserQuery } from "@/redux/services/wishlist/wishlistApi";
+import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import { UserOutlined } from "@ant-design/icons";
 import { AutoComplete, Avatar, Button, Popover } from "antd";
 import Image from "next/image";
@@ -24,6 +26,7 @@ const LandingTopHeader = () => {
   const { data: cartData } = useGetSingleCartByUserQuery(user?._id);
   const { data: products } = useGetAllProductsQuery();
   const [options, setOptions] = useState([]);
+  const { data: globalData } = useGetAllGlobalSettingQuery();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -51,7 +54,7 @@ const LandingTopHeader = () => {
             className="flex items-center gap-4 hover:text-primary pb-2 border-b border-b-gray-300"
           >
             <Image
-              src={product?.mainImage}
+              src={formatImagePath(product?.mainImage)}
               alt="product"
               width={30}
               height={30}
@@ -60,7 +63,7 @@ const LandingTopHeader = () => {
             <div className="ml-2">
               <p className="text-lg font-medium">{product?.name}</p>
               <p>
-                Price: $
+                Price: {globalData?.results?.currency}{" "}
                 {product?.offerPrice
                   ? product?.offerPrice
                   : product?.sellingPrice}
@@ -175,10 +178,13 @@ const LandingTopHeader = () => {
   return (
     <div className="md:flex items-center justify-between container mx-auto px-5 my-5">
       <div className="flex flex-col md:flex-row gap-10">
-        <Link href={"/"}>
-          <p className="text-2xl font-extrabold text-primary lg:flex">
-            Viscart
-          </p>
+        <Link href={"/"} className="-mt-1">
+          <Image
+            src={globalData?.results?.logo}
+            alt="logo"
+            width={50}
+            height={50}
+          />
         </Link>
         <div className="hidden lg:block relative">
           <AutoComplete
@@ -188,7 +194,7 @@ const LandingTopHeader = () => {
             size="large"
             className="!w-[30vw]"
           />
-          <FaSearch className="absolute right-2 top-1/2 -translate-y-1/2 text-primary text-xl" />
+          <FaSearch className="absolute right-2 top-5 -translate-y-1/2 text-primary text-xl" />
         </div>
       </div>
       {routes}
